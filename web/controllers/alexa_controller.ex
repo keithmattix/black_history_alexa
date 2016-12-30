@@ -19,7 +19,7 @@ defmodule BlackHistoryAlexa.AlexaController do
   def intent_request(conn, "GetEvent", request) do
     date =
       request.request.intent.slots["Date"]["value"]
-      |> Timex.parse("{YYYY}-{0M}-{D}")
+      |> Timex.parse!("{YYYY}-{0M}-{D}")
       |> Timex.to_datetime
     month = Map.get(date, :month)
     day = Map.get(date, :day)
