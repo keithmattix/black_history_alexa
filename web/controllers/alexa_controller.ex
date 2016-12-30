@@ -21,7 +21,7 @@ defmodule BlackHistoryAlexa.AlexaController do
       request.request.intent.slots["Date"]["value"]
       |> Timex.parse!("{YYYY}-{0M}-{D}")
       |> Timex.to_datetime
-    month = Map.get(date, :month)
+    month = Map.get(date, :month) |> Timex.month_name |> String.downcase
     day = Map.get(date, :day)
     data_url = Application.get_env(:black_history_alexa, :config)[:data_url]
     body =
@@ -29,6 +29,7 @@ defmodule BlackHistoryAlexa.AlexaController do
       |> HTTPoison.get!
       |> Map.get(:body)
       |> Poison.decode!
+      |> Map.get(month)
     IO.inspect body
     event = Enum.at(body, day)
     response =
