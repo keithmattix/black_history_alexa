@@ -1,6 +1,8 @@
 defmodule BlackHistoryAlexa.AlexaController do
   use BlackHistoryAlexa.Web, :controller
   use PhoenixAlexa.Controller, :retrieve
+  @months ["january", "february", "march", "april", "may", "june", "july",
+          "august", "september", "october", "november", "december"]
 
   def launch_request(conn, request) do
     response =
@@ -15,8 +17,16 @@ defmodule BlackHistoryAlexa.AlexaController do
   end
 
   def intent_request(conn, "GetEvent", request) do
-    date = request.request.intent.slots["Date"]["Value"]
+    date = request.request.intent.slots["Date"]["Value"] |> DateTime.from_iso8601
+    month = date[:month]
+    day = date[:day]
     data_url = Application.get_env(:black_history_alexa, :config)[:data_url]
-    response = Map.get(:body, HTTPoison.get!(data_url))
+    body = Map.get(:body, HTTPoison.get!(data_url))[:month]
+    event = Enum.at(body, day)
+    response =
+      %Response{}
+      |> set_output_speech(%TextOutputSpeech{text: event})
+      |> set_should_end_response(true)
+    conn |> set_response(response)
   end
 end
