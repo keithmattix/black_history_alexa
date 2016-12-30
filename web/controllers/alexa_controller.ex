@@ -28,7 +28,8 @@ defmodule BlackHistoryAlexa.AlexaController do
       data_url
       |> HTTPoison.get!
       |> Map.get(:body)
-      |> Keyword.get(month)
+      |> Poison.decode!
+      |> Map.get(month)
     event = Enum.at(body, day)
     response =
       %Response{}
