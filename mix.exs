@@ -19,7 +19,7 @@ defmodule BlackHistoryAlexa.Mixfile do
   def application do
     [mod: {BlackHistoryAlexa, []},
      applications: [:phoenix, :phoenix_pubsub, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :timex]]
   end
 
   # Specifies which paths to compile per environment.
@@ -38,7 +38,8 @@ defmodule BlackHistoryAlexa.Mixfile do
      {:cowboy, "~> 1.0"},
      {:phoenix_alexa, "~> 0.2.0"},
      {:poison, "~> 2.0"},
-     {:httpoison, "~> 0.10.0"}]
+     {:httpoison, "~> 0.10.0"},
+     {:timex, "~> 3.1.5"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

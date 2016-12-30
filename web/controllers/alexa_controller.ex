@@ -17,9 +17,12 @@ defmodule BlackHistoryAlexa.AlexaController do
   end
 
   def intent_request(conn, "GetEvent", request) do
-    date = request.request.intent.slots["Date"]["Value"] |> DateTime.from_iso8601
-    month = date[:month]
-    day = date[:day]
+    date =
+      request["request"]["intent"]["slots"]["Date"]["value"]
+      |> Timex.parse("{YYYY}-{0M}-{D}")
+      |> Timex.to_datetime
+    month = Map.get(date, :month)
+    day = Map.get(date, :day)
     data_url = Application.get_env(:black_history_alexa, :config)[:data_url]
     body =
       :body
