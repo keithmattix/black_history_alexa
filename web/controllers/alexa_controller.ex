@@ -30,6 +30,7 @@ defmodule BlackHistoryAlexa.AlexaController do
       |> Map.get(:body)
       |> Poison.decode!
       |> Map.get(month)
+    IO.inspect body
     event = Enum.at(body, day)
     response =
       %Response{}
