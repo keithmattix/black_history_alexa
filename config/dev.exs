@@ -24,8 +24,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :black_history_alexa, BlackHistoryAlexa.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: "keith",
   database: "black_history_alexa_dev",
   hostname: "localhost",
   pool_size: 10
