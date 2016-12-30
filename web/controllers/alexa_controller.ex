@@ -4,7 +4,7 @@ defmodule BlackHistoryAlexa.AlexaController do
   @months ["january", "february", "march", "april", "may", "june", "july",
           "august", "september", "october", "november", "december"]
 
-  def launch_request(conn, request) do
+  def launch_request(conn, _request) do
     response =
       %Response{}
       |> set_output_speech(%TextOutputSpeech{text: "Welcome to the BlackHistory Calendar."})
@@ -12,7 +12,7 @@ defmodule BlackHistoryAlexa.AlexaController do
     conn |> set_response(response)
   end
 
-  def session_end_request(conn, request) do
+  def session_end_request(conn, _request) do
     conn
   end
 
@@ -21,12 +21,15 @@ defmodule BlackHistoryAlexa.AlexaController do
     month = date[:month]
     day = date[:day]
     data_url = Application.get_env(:black_history_alexa, :config)[:data_url]
-    body = Map.get(:body, HTTPoison.get!(data_url))[:month]
+    body =
+      :body
+      |> Map.get(HTTPoison.get!(data_url))
+      |> Map.get(month)
     event = Enum.at(body, day)
     response =
       %Response{}
       |> set_output_speech(%TextOutputSpeech{text: event})
-      |> set_should_end_response(true)
+      |> set_should_end_session(true)
     conn |> set_response(response)
   end
 end

@@ -14,7 +14,10 @@ use Mix.Config
 config :black_history_alexa, BlackHistoryAlexa.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [host: System.get_env("HOST"), port: 443, scheme: "https"],
-  cache_static_manifest: "priv/static/manifest.json"
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  cache_static_manifest: "priv/static/manifest.json",
+  server: true,
+  version: Mix.Project.config[:version]
 
 # Do not print debug messages in production
 config :logger, level: :info

@@ -13,12 +13,9 @@ config :black_history_alexa,
 config :black_history_alexa, BlackHistoryAlexa.Endpoint,
   url: [host: System.get_env("HOST")],
   secret_key_base: "UBj7AkKhm5MuF/fEdCD+UdKLqT5kfHSmBZEMAABZW2MlJDAicsByute4e6rz/b1U",
-  force_ssl: [rewrite_on: [:x_forwarded_proto]],
   render_errors: [view: BlackHistoryAlexa.ErrorView, accepts: ~w(json)],
   pubsub: [name: BlackHistoryAlexa.PubSub,
-           adapter: Phoenix.PubSub.PG2],
-  server: true,
-  version: Mix.Project.config[:version]
+           adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
