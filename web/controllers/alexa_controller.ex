@@ -25,8 +25,9 @@ defmodule BlackHistoryAlexa.AlexaController do
     day = Map.get(date, :day)
     data_url = Application.get_env(:black_history_alexa, :config)[:data_url]
     body =
-      :body
-      |> Map.get(HTTPoison.get!(data_url))
+      data_url
+      |> HTTPoison.get!
+      |> Map.get(:body)
       |> Map.get(month)
     event = Enum.at(body, day)
     response =
