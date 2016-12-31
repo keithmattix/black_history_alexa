@@ -19,7 +19,7 @@ defmodule BlackHistoryAlexa.AlexaController do
   def intent_request(conn, "GetEvent", request) do
     case request.request.intent.slots["Date"]["value"] |> Timex.parse("{YYYY}-{0M}-{D}") do
       {:error, _} ->
-        error_message = "I'm sorry, that was not a valid date. If you need help, just say help."
+        error_message = "I'm sorry, that was not a valid request. If you need help, just say help."
         response =
           %Response{}
           |> set_output_speech(%TextOutputSpeech{text: error_message})
