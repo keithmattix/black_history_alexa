@@ -36,6 +36,7 @@ defmodule BlackHistoryAlexa.AlexaController do
     derived_hash = :crypto.hash(:sha, raw_request_body)
     Logger.info "Derived hash:"
     Logger.debug "#{inspect(derived_hash)}"
+    Logger.debug "Matching #{asserted_hash == derived_hash}"
     conn
   end
 
