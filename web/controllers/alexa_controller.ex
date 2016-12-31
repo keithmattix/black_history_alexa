@@ -24,7 +24,8 @@ defmodule BlackHistoryAlexa.AlexaController do
   def verify_request(conn, _request) do
     {:ok, raw_request_body} = conn.body_params |> Poison.encode
     Logger.debug "Raw request: #{inspect(raw_request_body)}"
-    cert_chain_url = conn |> get_req_header("signaturecertchainurl")
+    cert_chain_url = conn |> get_req_header("signaturecertchainurl") |> List.first
+    Logger.debug "Url: #{inspect(cert_chain_url)}"
     signature = conn |> get_req_header("signature") |> List.first
     Logger.debug "Signature: #{inspect(signature)}"
     {:ok, ruby} = Ruby.start(ruby_lib: Path.expand("lib/black_history_alexa/ruby"))
