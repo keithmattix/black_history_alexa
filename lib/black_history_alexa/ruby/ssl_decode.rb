@@ -18,8 +18,8 @@ def decode(raw, signature, request_body)
     signature_enc = Base64.decode64(signature)
     asserted_hash = public_key.public_decrypt(signature_enc) # Asserted hash
     derived_hash = Digest::SHA1.hexdigest request_body # Derived hash
-    puts "Asserted: #{inspect(asserted_hash)}"
-    puts "Derived: #{inspect(derived_hash)}"
+    puts "Asserted: #{inspect(asserted_hash.inspect}"
+    puts "Derived: #{derived_hash.inspect}"
     puts "Hashes match? #{asserted_hash == derived_hash}"
     asserted_hash
   else
