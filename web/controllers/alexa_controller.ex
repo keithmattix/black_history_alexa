@@ -25,6 +25,7 @@ defmodule BlackHistoryAlexa.AlexaController do
     {:ok, raw_request_body} = conn.body_params |> Poison.encode
     cert_chain_url = conn |> get_req_header("signaturecertchainurl")
     signature = conn |> get_req_header("signature")
+    Logger.debug "Signature: #{inspect(signature)}"
     {:ok, %HTTPoison.Response{body: body}} = HTTPoison.get(cert_chain_url)
     {:ok, ruby} = Ruby.start(ruby_lib: Path.expand("lib/black_history_alexa/ruby"))
     Logger.info "Asserted Hash"
