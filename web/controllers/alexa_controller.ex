@@ -7,7 +7,7 @@ defmodule BlackHistoryAlexa.AlexaController do
 
   plug :verify_request
 
-  def launch_request(conn, request) do
+  def launch_request(conn, _request) do
     response =
       %Response{}
       |> set_output_speech(%TextOutputSpeech{text: "Welcome to the BlackHistory Calendar."})
@@ -19,11 +19,10 @@ defmodule BlackHistoryAlexa.AlexaController do
     conn
   end
 
-  def verify_request(conn, request) do
-    cert_chain_url = conn |> get_req_header("SignatureCertChainUrl")
-    signature = conn |> get_req_header("Signature")
-    IO.puts "Cert Chain: #{cert_chain_url}"
-    IO.puts "Signature: #{signature}"
+  def verify_request(conn, _request) do
+    IO.puts "Headers:"
+    IO.inspect conn.req_headers
+    conn
   end
 
   def intent_request(conn, "GetEvent", request) do
