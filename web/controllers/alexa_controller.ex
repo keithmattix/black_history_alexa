@@ -1,6 +1,7 @@
 defmodule BlackHistoryAlexa.AlexaController do
   use BlackHistoryAlexa.Web, :controller
   use PhoenixAlexa.Controller, :retrieve
+  use Export.Ruby
 
   @months ["january", "february", "march", "april", "may", "june", "july",
           "august", "september", "october", "november", "december"]
@@ -20,8 +21,19 @@ defmodule BlackHistoryAlexa.AlexaController do
   end
 
   def verify_request(conn, _request) do
-    IO.puts "Headers:"
-    IO.inspect conn.req_headers
+    raw_request_body = conn.private[:raw_body]
+    cert_chain_url = conn |> get_req_header("signaturecertchainurl")
+    signature = conn |> get_req_header("signature")
+    {:ok, %HTTPoison.Response{body: body}} = HTTPoison.get(cert_chain_url)
+    {:ok, ruby} = Ruby.start(ruby_lib: Path.expand("lib/black_history_alexa/ruby"))
+    IO.puts "Asserted Hash"
+    asserted_hash = ruby |> Ruby.call("ssl_decode", "decode", [body, signature])
+    IO.inspect asserted_hash
+    IO.puts "Raw request body:"
+    IO.inspect raw_request_body
+    derived_hash = :crypto.hash(:sha, raw_request_body)
+    IO.puts "Derived hash:"
+    IO.inspect derived_hash
     conn
   end
 

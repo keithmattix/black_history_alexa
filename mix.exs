@@ -39,7 +39,9 @@ defmodule BlackHistoryAlexa.Mixfile do
      {:phoenix_alexa, "~> 0.2.0"},
      {:poison, "~> 2.0"},
      {:httpoison, "~> 0.10.0"},
-     {:timex, "~> 3.1.5"}]
+     {:timex, "~> 3.1.5"},
+     {:export, "~> 0.0.7"},
+     {:erlport, github: "hdima/erlport", manager: :make}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.

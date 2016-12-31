@@ -20,6 +20,13 @@ defmodule BlackHistoryAlexa.Endpoint do
   plug Plug.RequestId
   plug Plug.Logger
 
+  defp copy_req_body(conn, _) do
+    {:ok, body, _} = Plug.Conn.read_body(conn)
+    Plug.Conn.put_private(conn, :raw_body, body)
+  end
+  
+  plug :copy_req_body
+
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
