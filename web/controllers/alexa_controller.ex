@@ -1,10 +1,13 @@
 defmodule BlackHistoryAlexa.AlexaController do
   use BlackHistoryAlexa.Web, :controller
   use PhoenixAlexa.Controller, :retrieve
+  alias Plug.Conn
+
   @months ["january", "february", "march", "april", "may", "june", "july",
           "august", "september", "october", "november", "december"]
 
-  def launch_request(conn, _request) do
+  def launch_request(conn, request) do
+    verify_request(conn, request)
     response =
       %Response{}
       |> set_output_speech(%TextOutputSpeech{text: "Welcome to the BlackHistory Calendar."})
@@ -14,6 +17,13 @@ defmodule BlackHistoryAlexa.AlexaController do
 
   def session_end_request(conn, _request) do
     conn
+  end
+
+  def verify_request(conn, request) do
+    cert_chain_url = conn |> get_req_header("SignatureCertChainUrl")
+    signature = conn |> get_req_header("Signature")
+    IO.puts "Cert Chain: #{cert_chain_url}"
+    IO.puts "Signature: #{signature}"
   end
 
   def intent_request(conn, "GetEvent", request) do
