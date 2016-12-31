@@ -21,10 +21,13 @@ defmodule BlackHistoryAlexa.Endpoint do
   plug Plug.Logger
 
   defp copy_req_body(conn, _) do
+    require Logger
+    Logger.info "Copying response body"
     {:ok, body, _} = Plug.Conn.read_body(conn)
+    Logger.info "Copied response body"
     Plug.Conn.put_private(conn, :raw_body, body)
   end
-  
+
   plug :copy_req_body
 
   plug Plug.Parsers,
