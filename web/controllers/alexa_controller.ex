@@ -22,6 +22,8 @@ defmodule BlackHistoryAlexa.AlexaController do
 
   def verify_request(conn, _request) do
     raw_request_body = conn.private[:raw_body]
+    IO.puts "Raw request body:"
+    raw_request_body
     cert_chain_url = conn |> get_req_header("signaturecertchainurl")
     signature = conn |> get_req_header("signature")
     {:ok, %HTTPoison.Response{body: body}} = HTTPoison.get(cert_chain_url)
