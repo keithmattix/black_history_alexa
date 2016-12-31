@@ -1,7 +1,7 @@
 require 'openssl'
 require 'base64'
 
-def decode(raw, signature)
+def decode(raw, signature, derived_hash)
   amazon_certificate, chain_certificates = parse_raw(raw)
   chain_certificates = [chain_certificates].flatten
   return false unless check_alt_name(amazon_certificate)
@@ -15,7 +15,9 @@ def decode(raw, signature)
     end
     public_key = amazon_certificate.public_key
     signature_enc = Base64.decode64(signature)
-    public_key.public_decrypt(signature_enc) # Asserted hash value
+    asserted_hash = public_key.public_decrypt(signature_enc) # Asserted hash value
+    puts asserted_hash == derived_hash
+    asserted_hash
   else
     false
   end

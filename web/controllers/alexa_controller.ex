@@ -25,15 +25,15 @@ defmodule BlackHistoryAlexa.AlexaController do
     {:ok, raw_request_body} = conn.body_params |> Poison.encode
     cert_chain_url = conn |> get_req_header("signaturecertchainurl")
     signature = conn |> get_req_header("signature") |> List.first
+    derived_hash = :crypto.hash(:sha, raw_request_body)
     Logger.debug "Signature: #{inspect(signature)}"
     {:ok, %HTTPoison.Response{body: body}} = HTTPoison.get(cert_chain_url)
     {:ok, ruby} = Ruby.start(ruby_lib: Path.expand("lib/black_history_alexa/ruby"))
     Logger.info "Asserted Hash"
-    asserted_hash = ruby |> Ruby.call("ssl_decode", "decode", [body, signature])
+    asserted_hash = ruby |> Ruby.call("ssl_decode", "decode", [body, signature, derived_hash])
     Logger.debug "#{inspect(asserted_hash)}"
     Logger.info "Raw request body:"
     Logger.debug "#{inspect(raw_request_body)}"
-    derived_hash = :crypto.hash(:sha, raw_request_body)
     Logger.info "Derived hash:"
     Logger.debug "#{inspect(derived_hash)}"
     Logger.debug "Matching #{asserted_hash == derived_hash}"
