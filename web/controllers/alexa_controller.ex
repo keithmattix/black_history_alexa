@@ -1,13 +1,13 @@
 defmodule BlackHistoryAlexa.AlexaController do
   use BlackHistoryAlexa.Web, :controller
   use PhoenixAlexa.Controller, :retrieve
-  alias Plug.Conn
 
   @months ["january", "february", "march", "april", "may", "june", "july",
           "august", "september", "october", "november", "december"]
 
+  plug :verify_request
+
   def launch_request(conn, request) do
-    verify_request(conn, request)
     response =
       %Response{}
       |> set_output_speech(%TextOutputSpeech{text: "Welcome to the BlackHistory Calendar."})
@@ -46,7 +46,6 @@ defmodule BlackHistoryAlexa.AlexaController do
           |> Map.get(:body)
           |> Poison.decode!
           |> Map.get(month)
-        IO.inspect body
         event = Enum.at(body, day)
         response =
           %Response{}
