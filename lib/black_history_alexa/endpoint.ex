@@ -20,19 +20,6 @@ defmodule BlackHistoryAlexa.Endpoint do
   plug Plug.RequestId
   plug Plug.Logger
 
-  plug :copy_req_body
-
-
-  defp copy_req_body(conn, _) do
-    require Logger
-    Logger.info "Copying response body"
-    {:ok, body, _} = Plug.Conn.read_body(conn)
-    Logger.info "Copied response body"
-    Logger.debug "Request body: #{inspect(body)}"
-    conn = Plug.Conn.put_private(conn, :raw_body, body)
-    Logger.info "Assigned conn"
-    conn
-  end
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
