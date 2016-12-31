@@ -15,7 +15,7 @@ def decode(raw, signature)
     end
     public_key = amazon_certificate.public_key
     signature_enc = Base64.decode64(signature)
-    public_key.public_decrpyt(signature_enc) # Asserted hash value
+    public_key.public_decrypt(signature_enc) # Asserted hash value
   else
     false
   end
