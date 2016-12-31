@@ -20,7 +20,7 @@ config :black_history_alexa, BlackHistoryAlexa.Endpoint,
   version: Mix.Project.config[:version]
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger, :console, format: "[$level] $message\n"
 
 config :black_history_alexa, BlackHistoryAlexa.Endpoint,
   secret_key_base: System.get_env("SECRET_KEY_BASE")
