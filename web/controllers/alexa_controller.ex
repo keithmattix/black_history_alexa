@@ -24,7 +24,7 @@ defmodule BlackHistoryAlexa.AlexaController do
   def verify_request(conn, _request) do
     require IEx
     IEx.pry
-    raw_request_body = conn.body_params |> Poison.encode
+    {:ok, raw_request_body} = conn.body_params |> Poison.encode!
     Logger.debug "#{inspect(raw_request_body)}"
     cert_chain_url = conn |> get_req_header("signaturecertchainurl")
     signature = conn |> get_req_header("signature")

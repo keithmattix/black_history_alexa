@@ -3,6 +3,7 @@ require 'base64'
 
 def decode(raw, signature)
   amazon_certificate, chain_certificates = parse_raw(raw)
+  chain_certificates = [chain_certificates].flatten
   return false unless check_alt_name(amazon_certificate)
   return false unless check_not_expired(amazon_certificate)
   cert_store = OpenSSL::X509::Store.new
