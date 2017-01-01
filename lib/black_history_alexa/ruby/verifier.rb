@@ -6,5 +6,5 @@ def verify(cert_chain_url, signature, request)
     c.verify_timestamps = true
     c.timestamp_tolerance = 60 # seconds
   end
-  verifier.verify!(cert_chain_url, signature, request.to_json)
+  verifier.verify!(cert_chain_url, signature, request)
 end
